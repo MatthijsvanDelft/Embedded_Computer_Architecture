@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1504699728 source:c:\users\matthijs\documents\utwente\quater_2(2017-1a)\embedded_computer_architecture\assignment_1\codeblocks\assignment_1\main.c
+	<stdio.h>
+	<stdlib.h>
+	<stdint.h>
+
