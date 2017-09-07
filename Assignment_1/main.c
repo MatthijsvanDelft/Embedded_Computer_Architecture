@@ -56,36 +56,41 @@ int main()
     uint8_t nrCols = NR_MATRIX_COLS;
     uint8_t nrElements = NR_MATRIX_ELEMENTS;
 
-    printf("%d\n", *(x+168));
-    printf("%d\n", *(x));
-
-/*
     for(nrRows=0; nrRows<NR_MATRIX_ROWS; nrRows++){
 
         for(nrCols=0; nrCols<NR_MATRIX_COLS; nrCols++){
-            x = matrixX + nrRows;
-            y = matrixY + nrCols;
 
-            printf("%d\t %d\n", *x, *y);
-
+            /*Multiplication.*/
             *r += *x * *y;
-            *r += *(x+=1) * *(y+=13);
-            *r += *(x+=1) * *(y+=13);
-            *r += *(x+=1) * *(y+=13);
-            *r += *(x+=1) * *(y+=13);
-            *r += *(x+=1) * *(y+=13);
-            *r += *(x+=1) * *(y+=13);
-            *r += *(x+=1) * *(y+=13);
-            *r += *(x+=1) * *(y+=13);
-            *r += *(x+=1) * *(y+=13);
-            *r += *(x+=1) * *(y+=13);
-            *r += *(x+=1) * *(y+=13);
-            *r += *(x+=1) * *(y+=13);
+            *r += *(x+1) * *(y+13);
+            *r += *(x+2) * *(y+26);
+            *r += *(x+3) * *(y+39);
+            *r += *(x+4) * *(y+52);
+            *r += *(x+5) * *(y+65);
+            *r += *(x+6) * *(y+78);
+            *r += *(x+7) * *(y+91);
+            *r += *(x+8) * *(y+104);
+            *r += *(x+9) * *(y+117);
+            *r += *(x+10) * *(y+130);
+            *r += *(x+11) * *(y+143);
+            *r += *(x+12) * *(y+156);
 
+            y++;
             r++;
         }
+        x+=13;
+        y=matrixY;
     }
 
+    /*Matrices back to base address*/
+    x = matrixX;
+    y = matrixY;
+    r = matrixR;
+
+    while(nrElements>0){
+        *r++ += *x++ + *y++;
+        nrElements--;
+    }
 
     for (q=0; q<NR_MATRIX_ROWS; q++){
         for (p=0; p<NR_MATRIX_COLS; p++){
@@ -93,7 +98,6 @@ int main()
         }
         printf("\n");
     }
-*/
 
     return 0;
 }
