@@ -57,26 +57,26 @@ void loop() {
   70,  108,  69,   12,   0,    80,   115,  107,  71,   54,   5,    57,   3,
   123, 72,   56,   5,    30,   45,   2,    11,   124,  84,   63,   47,   104};
 
-  uint8_t *x = matrixX;
-  uint8_t *y = matrixY;
-  uint32_t *r = matrixR;
+    uint8_t *x = matrixX + (NR_MATRIX_ELEMENTS-1);
+    uint8_t *y = matrixY + (NR_MATRIX_ELEMENTS-1);
+    uint32_t *r = matrixR + (NR_MATRIX_ELEMENTS-1);
 
-  for(i = NR_MATRIX_ROWS; i > 0; i--)
+ for(i = NR_MATRIX_ROWS; i > 0; i--)
   {
-    for(j = 0; j < NR_MATRIX_COLS; j++)
+    for(j = NR_MATRIX_COLS; j > 0; j--)
     {
-      x += (NR_MATRIX_COLS * i);
-      y += j;
-      for(k = 0; k < NR_MATRIX_COLS; k++)
+      for(k = NR_MATRIX_COLS; k > 0; k--)
       {
         *r += *x * *y;
-        x++;
-        y += NR_MATRIX_COLS;
+        x--;
+        y -= NR_MATRIX_COLS;
       }
-      r++;
-      x = matrixX;
-      y = matrixY;
+      x += 13; //matrixX + (NR_MATRIX_ELEMENTS-1);
+      y += 168;
+      r--;
     }
+    x -= 13;
+    y += 13;
   }
 
     /*Matrices back to base address*/

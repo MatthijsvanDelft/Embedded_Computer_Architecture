@@ -54,16 +54,14 @@
 
 int main()
 {
-    uint8_t *x = matrixX;
-    uint8_t *y = matrixY;
+    uint8_t *x = matrixX + (NR_MATRIX_ELEMENTS-1);
+    uint8_t *y = matrixY + (NR_MATRIX_ELEMENTS-1);
     uint32_t *r = matrixR + (NR_MATRIX_ELEMENTS-1);
 
- for(i = NR_MATRIX_ROWS-1; i >= 0; i--)
+ for(i = NR_MATRIX_ROWS; i > 0; i--)
   {
-    for(j = NR_MATRIX_COLS-1; j >= 0; j--)
+    for(j = NR_MATRIX_COLS; j > 0; j--)
     {
-      x += (NR_MATRIX_ROWS * (i+1) -1);
-      y += (156+j);
       for(k = NR_MATRIX_COLS; k > 0; k--)
       {
         *r += *x * *y;
@@ -78,10 +76,12 @@ int main()
         x--;
         y -= NR_MATRIX_COLS;
       }
+      x += 13; //matrixX + (NR_MATRIX_ELEMENTS-1);
+      y += 168;
       r--;
-      x = matrixX;              //Optimize
-      y = matrixY;
     }
+    x -= 13;
+    y += 13;
   }
 
     /*Matrices back to base address*/
