@@ -12,17 +12,9 @@
 #define NR_MATRIX_COLS 13
 #define NR_MATRIX_ELEMENTS 169
 
-  uint32_t matrixR[NR_MATRIX_ELEMENTS] = {0};
+  int32_t matrixR[NR_MATRIX_ELEMENTS] = {0};
 
-  uint8_t nrRows = NR_MATRIX_ROWS;
-  uint8_t nrCols = NR_MATRIX_COLS;
-  uint8_t nrElements = NR_MATRIX_ELEMENTS;
-
-  uint8_t i;
-  uint8_t j;
-  uint8_t k;
-
-  const uint8_t matrixX[NR_MATRIX_ELEMENTS] =
+  const int8_t matrixX[NR_MATRIX_ELEMENTS] =
   {28,  122,  80,   42,   54,   122,  98,   42,   99,   58,   124,  29,   21,
   113, 85,   30,   35,   41,   98,   103,  68,   15,   50,   31,   80,   54,
   47,  37,   23,   96,   59,   47,   84,   26,   84,   72,   51,   118,  119,
@@ -37,7 +29,7 @@
   25,  109,  74,   3,    126,  56,   99,   15,   69,   73,   76,   19,   97,
   59,  84,   102,  53,   30,   34,   33,   105,  75,   102,  60,   121,  93};
 
-  const uint8_t matrixY[NR_MATRIX_ELEMENTS] =
+  const int8_t matrixY[NR_MATRIX_ELEMENTS] =
   {102,  61,   111,  79,   99,   3,    25,   50,   33,   48,   5,    94,   28,
   106, 89,   35,   37,   112,  51,   13,   70,   3,    110,  31,   7,    99,
   65,  115,  94,   68,   95,   114,  34,   34,   64,   1,    11,   66,   126,
@@ -54,41 +46,37 @@
 
 int main()
 {
-    uint8_t *xM = matrixX + (NR_MATRIX_ELEMENTS-1);
-    uint8_t *xA = xM;
-    uint8_t *yM = matrixY + (NR_MATRIX_ELEMENTS-1);
-    uint8_t *yA = yM;
-    uint32_t *r = matrixR + (NR_MATRIX_ELEMENTS-1);
+    int8_t *xM = matrixX + (NR_MATRIX_ELEMENTS-1);
+    int8_t *xA = xM;
+    int8_t *yM = matrixY + (NR_MATRIX_ELEMENTS-1);
+    int8_t *yA = yM;
+    int32_t *r = matrixR + (NR_MATRIX_ELEMENTS-1);
 
- for(i = NR_MATRIX_ROWS; i > 0; i--)
-  {
-    for(j = NR_MATRIX_COLS; j > 0; j--)
-    {
-      for(k = NR_MATRIX_COLS; k > 0; k--)
-      {
-        *r += *xM * *yM;
+    register uint8_t e = NR_MATRIX_ELEMENTS;
+    register uint8_t k = 0;
 
-        /*
-        printf("i: %d\t", i);
-        printf("j: %d\t", j);
-        printf("k: %d\n", k);
-        printf("x: %d\t", *x);
-        printf("y: %d\t", *y);
-        printf("r: %d\n", *r);*/
+    while(e>0){
+        register int32_t mBuffer = 0;
+        for(k = NR_MATRIX_COLS; k > 0; --k)
+        {
+            mBuffer += *xM * *yM;
+            --xM;
+            yM -= NR_MATRIX_COLS;
+        }
+        *r += *xA + *yA + mBuffer;
+        xM += 13;
+        yM += 168;
+        --xA;
+        --yA;
+        --r;
 
-        xM--;
-        yM -= NR_MATRIX_COLS;
-      }
-      *r += *xA + *yA;
-      xM += 13;
-      yM += 168;
-      xA--;
-      yA--;
-      r--;
+        if(e%13 == 0){
+            xM -= 13;
+            yM += 13;
+        }
+
+        --e;
     }
-    xM -= 13;
-    yM += 13;
-  }
 
     int value = 0;
     int q, p = 0;
