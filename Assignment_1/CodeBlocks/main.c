@@ -54,8 +54,10 @@
 
 int main()
 {
-    uint8_t *x = matrixX + (NR_MATRIX_ELEMENTS-1);
-    uint8_t *y = matrixY + (NR_MATRIX_ELEMENTS-1);
+    uint8_t *xM = matrixX + (NR_MATRIX_ELEMENTS-1);
+    uint8_t *xA = xM;
+    uint8_t *yM = matrixY + (NR_MATRIX_ELEMENTS-1);
+    uint8_t *yA = yM;
     uint32_t *r = matrixR + (NR_MATRIX_ELEMENTS-1);
 
  for(i = NR_MATRIX_ROWS; i > 0; i--)
@@ -64,39 +66,34 @@ int main()
     {
       for(k = NR_MATRIX_COLS; k > 0; k--)
       {
-        *r += *x * *y;
+        *r += *xM * *yM;
 
+        /*
         printf("i: %d\t", i);
         printf("j: %d\t", j);
         printf("k: %d\n", k);
         printf("x: %d\t", *x);
         printf("y: %d\t", *y);
-        printf("r: %d\n", *r);
+        printf("r: %d\n", *r);*/
 
-        x--;
-        y -= NR_MATRIX_COLS;
+        xM--;
+        yM -= NR_MATRIX_COLS;
       }
-      x += 13; //matrixX + (NR_MATRIX_ELEMENTS-1);
-      y += 168;
+      *r += *xA + *yA;
+      xM += 13;
+      yM += 168;
+      xA--;
+      yA--;
       r--;
     }
-    x -= 13;
-    y += 13;
+    xM -= 13;
+    yM += 13;
   }
 
-    /*Matrices back to base address*/
-    x = matrixX;
-    y = matrixY;
-    r = matrixR;
-
-    while(nrElements>0){
-        *r++ += *x++ + *y++;
-        nrElements--;
-    }
-
     int value = 0;
-    for (int q=0; q<NR_MATRIX_ROWS; q++){
-        for (int p=0; p<NR_MATRIX_COLS; p++){
+    int q, p = 0;
+    for (q=0; q<NR_MATRIX_ROWS; q++){
+        for (p=0; p<NR_MATRIX_COLS; p++){
             printf("%d\t", matrixR[value]);
             value++;
         }

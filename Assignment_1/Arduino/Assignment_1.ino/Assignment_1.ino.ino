@@ -4,6 +4,13 @@
 #define NR_MATRIX_COLS 13
 #define NR_MATRIX_ELEMENTS 169
 
+/**
+ * Authors: Matthijs van Delft, Maikel Coenen.
+ * Course: Embedded Computer Architecture.
+ * Goal: Optimize this code based on speed as much as possible.
+ * Tip: Compile with lever O1.
+ */
+
 void setup() {
   // put your setup code here, to run once:
   // initialize serial:
@@ -57,38 +64,32 @@ void loop() {
   70,  108,  69,   12,   0,    80,   115,  107,  71,   54,   5,    57,   3,
   123, 72,   56,   5,    30,   45,   2,    11,   124,  84,   63,   47,   104};
 
-    uint8_t *x = matrixX + (NR_MATRIX_ELEMENTS-1);
-    uint8_t *y = matrixY + (NR_MATRIX_ELEMENTS-1);
+    uint8_t *xM = matrixX + (NR_MATRIX_ELEMENTS-1);
+    uint8_t *xA = xM;
+    uint8_t *yM = matrixY + (NR_MATRIX_ELEMENTS-1);
+    uint8_t *yA = yM;
     uint32_t *r = matrixR + (NR_MATRIX_ELEMENTS-1);
 
- for(i = NR_MATRIX_ROWS; i > 0; i--)
+ for(i = NR_MATRIX_ROWS; i > 0; --i)
   {
-    for(j = NR_MATRIX_COLS; j > 0; j--)
+    for(j = NR_MATRIX_COLS; j > 0; --j)
     {
-      for(k = NR_MATRIX_COLS; k > 0; k--)
+      for(k = NR_MATRIX_COLS; k > 0; --k)
       {
-        *r += *x * *y;
-        x--;
-        y -= NR_MATRIX_COLS;
+        *r += *xM * *yM;
+        --xM;
+        yM -= NR_MATRIX_COLS;
       }
-      x += 13; //matrixX + (NR_MATRIX_ELEMENTS-1);
-      y += 168;
-      r--;
+      *r += *xA + *yA;
+      xM += 13;
+      yM += 168;      
+      --xA;
+      --yA;
+      --r;
     }
-    x -= 13;
-    y += 13;
+    xM -= 13;
+    yM += 13;
   }
-
-    /*Matrices back to base address*/
-    x = matrixX;
-    y = matrixY;
-    r = matrixR;
-
-    while(nrElements>0){
-        *r++ += *x++ + *y++;
-        nrElements--;
-    }
-
   
   //
   unsigned long currentTime = micros();
