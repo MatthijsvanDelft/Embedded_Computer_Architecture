@@ -72,25 +72,86 @@ void loop() {
     register uint8_t k = 0; 
   
     /*Start timer*/
-    unsigned long startTime = micros();
+
+	register int32_t mBuffer;
+
+	register int8_t reg0 = *xM--;
+	register int8_t reg1 = *xM--;
+	register int8_t reg2 = *xM--;
+	register int8_t reg3 = *xM--;
+	register int8_t reg4 = *xM--;
+	register int8_t reg5 = *xM--;
+	register int8_t reg6 = *xM--;
+	register int8_t reg7 = *xM--;
+	register int8_t reg8 = *xM--;
+	register int8_t reg9 = *xM--;
+	register int8_t reg10 = *xM--;
+	register int8_t reg11 = *xM--;
+	register int8_t reg12 = *xM--;
+	unsigned long startTime = micros();
 
     while(e>0){
-        register int mBuffer = 0;
+
+		mBuffer = 0;
+
+/*
         for(k = NR_MATRIX_COLS; k > 0; --k)
         {
             mBuffer += *xM * *yM;
             --xM;
             yM -= NR_MATRIX_COLS;
-        }
+        }*/
+
+		mBuffer += reg0 * *yM;
+		yM -= NR_MATRIX_COLS;
+		mBuffer += reg1 * *yM;
+		yM -= NR_MATRIX_COLS;
+		mBuffer += reg2 * *yM;
+		yM -= NR_MATRIX_COLS;
+		mBuffer += reg3 * *yM;
+		yM -= NR_MATRIX_COLS;
+		mBuffer += reg4 * *yM;
+		yM -= NR_MATRIX_COLS;
+		mBuffer += reg5 * *yM;
+		yM -= NR_MATRIX_COLS;
+		mBuffer += reg6 * *yM;
+		yM -= NR_MATRIX_COLS;
+		mBuffer += reg7 * *yM;
+		yM -= NR_MATRIX_COLS;
+		mBuffer += reg8 * *yM;
+		yM -= NR_MATRIX_COLS;
+		mBuffer += reg9 * *yM;
+		yM -= NR_MATRIX_COLS;
+		mBuffer += reg10 * *yM;
+		yM -= NR_MATRIX_COLS;
+		mBuffer += reg11 * *yM;
+		yM -= NR_MATRIX_COLS;
+		mBuffer += reg12 * *yM;
+		yM -= NR_MATRIX_COLS;
+
+
         *r += *xA + *yA + mBuffer;
-        xM += 13;
+
         yM += 168;
+
         --xA;
         --yA;
         --r;
 
         if(e%13 == 0){
-            xM -= 13;
+			reg0 = *xM--;
+			reg1 = *xM--;
+			reg2 = *xM--;
+			reg3 = *xM--;
+			reg4 = *xM--;
+			reg5 = *xM--;
+			reg6 = *xM--;
+			reg7 = *xM--;
+			reg8 = *xM--;
+			reg9 = *xM--;
+			reg10 = *xM--;
+			reg11 = *xM--;
+			reg12 = *xM--;
             yM += 13;
         }
 
