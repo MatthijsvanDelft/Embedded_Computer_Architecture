@@ -7,7 +7,7 @@
 //Beginning of Auto generated function prototypes by Atmel Studio
 //End of Auto generated function prototypes by Atmel Studio
 
-
+extern "C" void operation_loop(void);
 
 #define NR_MATRIX_ROWS 13
 #define NR_MATRIX_COLS 13
@@ -53,7 +53,7 @@ void loop() {
     65,  115,  94,   68,   95,   114,  34,   34,   64,   1,    11,   66,   126,
     114, 37,   42,   3,    88,   35,   124,  50,   74,   95,   25,   34,   24,
     25,  111,  4,    116,  54,   90,   11,   32,   121,  20,   26,   62,   60,
-    45,  41,   20,   33,   89,   75,   89,   2,    28,   19,   96,   46,   119,
+    45,  41,   20,   33,   89,   75,   89,   2,	    28,   19,   96,   46,   119,
     39,  68,   87,   59,   33,   82,   94,   14,   115,  0,    0,    92,   85,
     58,  62,   122,  106,  93,   39,   86,   80,   75,   23,   57,   89,   7,
     119, 75,   20,   42,   1,    120,  83,   24,   62,   78,   20,   25,   126,
@@ -62,28 +62,38 @@ void loop() {
     70,  108,  69,   12,   0,    80,   115,  107,  71,   54,   5,    57,   3,
     123, 72,   56,   5,    30,   45,   2,    11,   124,  84,   63,   47,   104};
 
-    int8_t *xM = matrixX + NR_MATRIX_ELEMENTS_MINUS_ONE;
-    int8_t *xA = xM;
-    int8_t *yM = matrixY + NR_MATRIX_ELEMENTS_MINUS_ONE;
-    int8_t *yA = yM;
-    int32_t *r = matrixR + NR_MATRIX_ELEMENTS_MINUS_ONE;
-  
-    register uint8_t e = NR_MATRIX_ELEMENTS;
-    register uint8_t k = 0; 
-  
-    /*Start timer*/
-    unsigned long startTime = micros();
 
-    while(e>0){
+
+	///////////
+	/*Start timer*/
+	unsigned long startTime = micros();
+
+	  
+	operation_loop();
+
+/*
+    register int8_t *xM = matrixX + NR_MATRIX_ELEMENTS_MINUS_ONE;
+    int8_t *xA = xM;
+    register int8_t *yM = matrixY + NR_MATRIX_ELEMENTS_MINUS_ONE;
+    int8_t *yA = yM;
+    register int32_t *r = matrixR + NR_MATRIX_ELEMENTS_MINUS_ONE;
+  
+    register uint8_t e = NR_MATRIX_ELEMENTS_MINUS_ONE;    //r18
+    register uint8_t k = 0;						//r19
+
+
+    do {
         register int mBuffer = 0;
-        for(k = NR_MATRIX_COLS; k > 0; --k)
-        {
-            mBuffer += *xM * *yM;
+		k = NR_MATRIX_COLS;
+        do {
+			mBuffer += *xM * *yM;
             --xM;
             yM -= NR_MATRIX_COLS;
-        }
+        } while(--k);
         *r += *xA + *yA + mBuffer;
-        xM += 13;
+        
+		
+		xM += NR_MATRIX_ROWS;
         yM += 168;
         --xA;
         --yA;
@@ -94,9 +104,9 @@ void loop() {
             yM += 13;
         }
 
-        --e;
-    }
-  
+    } while(e--);
+	*/
+  ////////////////////////////////////
   //
   unsigned long currentTime = micros();
   unsigned long elapsedTime = currentTime - startTime;
