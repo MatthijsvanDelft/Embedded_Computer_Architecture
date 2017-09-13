@@ -11,6 +11,7 @@
 #define NR_MATRIX_ROWS 13
 #define NR_MATRIX_COLS 13
 #define NR_MATRIX_ELEMENTS 169
+#define NR_MATRIX_ELEMENTS_MINUS_ONE 168
 
   int32_t matrixR[NR_MATRIX_ELEMENTS] = {0};
 
@@ -46,32 +47,81 @@
 
 int main()
 {
-    int8_t *xM = matrixX + (NR_MATRIX_ELEMENTS-1);
+    int8_t *xM = matrixX + NR_MATRIX_ELEMENTS_MINUS_ONE;
     int8_t *xA = xM;
-    int8_t *yM = matrixY + (NR_MATRIX_ELEMENTS-1);
+    int8_t *yM = matrixY + NR_MATRIX_ELEMENTS_MINUS_ONE;
     int8_t *yA = yM;
-    int32_t *r = matrixR + (NR_MATRIX_ELEMENTS-1);
+    int32_t *r = matrixR + NR_MATRIX_ELEMENTS_MINUS_ONE;
 
     register uint8_t e = NR_MATRIX_ELEMENTS;
     register uint8_t k = 0;
+    register int32_t mBuffer;
+
+    register int8_t reg0 = *xM--;
+	register int8_t reg1 = *xM--;
+	register int8_t reg2 = *xM--;
+	register int8_t reg3 = *xM--;
+	register int8_t reg4 = *xM--;
+	register int8_t reg5 = *xM--;
+	register int8_t reg6 = *xM--;
+	register int8_t reg7 = *xM--;
+	register int8_t reg8 = *xM--;
+	register int8_t reg9 = *xM--;
+	register int8_t reg10 = *xM--;
+	register int8_t reg11 = *xM--;
+	register int8_t reg12 = *xM--;
 
     while(e>0){
-        register int32_t mBuffer = 0;
-        for(k = NR_MATRIX_COLS; k > 0; --k)
-        {
-            mBuffer += *xM * *yM;
-            --xM;
-            yM -= NR_MATRIX_COLS;
-        }
+        mBuffer += reg0 * *yM;
+		yM -= NR_MATRIX_COLS;
+		mBuffer += reg1 * *yM;
+		yM -= NR_MATRIX_COLS;
+		mBuffer += reg2 * *yM;
+		yM -= NR_MATRIX_COLS;
+		mBuffer += reg3 * *yM;
+		yM -= NR_MATRIX_COLS;
+		mBuffer += reg4 * *yM;
+		yM -= NR_MATRIX_COLS;
+		mBuffer += reg5 * *yM;
+		yM -= NR_MATRIX_COLS;
+		mBuffer += reg6 * *yM;
+		yM -= NR_MATRIX_COLS;
+		mBuffer += reg7 * *yM;
+		yM -= NR_MATRIX_COLS;
+		mBuffer += reg8 * *yM;
+		yM -= NR_MATRIX_COLS;
+		mBuffer += reg9 * *yM;
+		yM -= NR_MATRIX_COLS;
+		mBuffer += reg10 * *yM;
+		yM -= NR_MATRIX_COLS;
+		mBuffer += reg11 * *yM;
+		yM -= NR_MATRIX_COLS;
+		mBuffer += reg12 * *yM;
+		yM -= NR_MATRIX_COLS;
+
+
         *r += *xA + *yA + mBuffer;
-        xM += 13;
+
         yM += 168;
+
         --xA;
         --yA;
         --r;
 
         if(e%13 == 0){
-            xM -= 13;
+			reg0 = *xM--;
+			reg1 = *xM--;
+			reg2 = *xM--;
+			reg3 = *xM--;
+			reg4 = *xM--;
+			reg5 = *xM--;
+			reg6 = *xM--;
+			reg7 = *xM--;
+			reg8 = *xM--;
+			reg9 = *xM--;
+			reg10 = *xM--;
+			reg11 = *xM--;
+			reg12 = *xM--;
             yM += 13;
         }
 
