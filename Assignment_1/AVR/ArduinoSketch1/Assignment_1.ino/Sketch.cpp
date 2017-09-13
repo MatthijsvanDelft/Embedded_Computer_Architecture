@@ -64,43 +64,52 @@ void loop() {
 
     int8_t *xM = matrixX + NR_MATRIX_ELEMENTS_MINUS_ONE;
     int8_t *xA = xM;
-    int8_t *yM = matrixY + NR_MATRIX_ELEMENTS_MINUS_ONE;
+    int8_t *yM = matrixY+ NR_MATRIX_ELEMENTS_MINUS_ONE;
     int8_t *yA = yM;
     int32_t *r = matrixR + NR_MATRIX_ELEMENTS_MINUS_ONE;
-  
+
     register uint8_t e = NR_MATRIX_ELEMENTS;
-    register uint8_t k = 0; 
+    register uint8_t k = 0;
+    register int32_t mBuffer = 0;
+	
+	register int8_t reg0 = 0;
+	register int8_t reg1 = 0;
+	register int8_t reg2 = 0;
+	register int8_t reg3 = 0;
+	register int8_t reg4 = 0;
+	register int8_t reg5 = 0;
+	register int8_t reg6 = 0;
+	register int8_t reg7 = 0;
+	register int8_t reg8 = 0;
+	register int8_t reg9 = 0;
+	register int8_t reg10 = 0;
+	register int8_t reg11 = 0;
+	register int8_t reg12 = 0;
   
     /*Start timer*/
-
-	register int32_t mBuffer;
-
-	register int8_t reg0 = *xM--;
-	register int8_t reg1 = *xM--;
-	register int8_t reg2 = *xM--;
-	register int8_t reg3 = *xM--;
-	register int8_t reg4 = *xM--;
-	register int8_t reg5 = *xM--;
-	register int8_t reg6 = *xM--;
-	register int8_t reg7 = *xM--;
-	register int8_t reg8 = *xM--;
-	register int8_t reg9 = *xM--;
-	register int8_t reg10 = *xM--;
-	register int8_t reg11 = *xM--;
-	register int8_t reg12 = *xM--;
 	unsigned long startTime = micros();
+	
+	while(e>0){
 
-    while(e>0){
+		if(e%13 == 0){
+			yM = matrixY+ NR_MATRIX_ELEMENTS_MINUS_ONE;
+
+			reg0 = *xM--;
+			reg1 = *xM--;
+			reg2 = *xM--;
+			reg3 = *xM--;
+			reg4 = *xM--;
+			reg5 = *xM--;
+			reg6 = *xM--;
+			reg7 = *xM--;
+			reg8 = *xM--;
+			reg9 = *xM--;
+			reg10 = *xM--;
+			reg11 = *xM--;
+			reg12 = *xM--;
+		}
 
 		mBuffer = 0;
-
-/*
-        for(k = NR_MATRIX_COLS; k > 0; --k)
-        {
-            mBuffer += *xM * *yM;
-            --xM;
-            yM -= NR_MATRIX_COLS;
-        }*/
 
 		mBuffer += reg0 * *yM;
 		yM -= NR_MATRIX_COLS;
@@ -127,36 +136,17 @@ void loop() {
 		mBuffer += reg11 * *yM;
 		yM -= NR_MATRIX_COLS;
 		mBuffer += reg12 * *yM;
-		yM -= NR_MATRIX_COLS;
 
+		*r += mBuffer + *xA + *yA;
 
-        *r += *xA + *yA + mBuffer;
+		yM += 155;
 
-        yM += 168;
+		--xA;
+		--yA;
+		--r;
 
-        --xA;
-        --yA;
-        --r;
-
-        if(e%13 == 0){
-			reg0 = *xM--;
-			reg1 = *xM--;
-			reg2 = *xM--;
-			reg3 = *xM--;
-			reg4 = *xM--;
-			reg5 = *xM--;
-			reg6 = *xM--;
-			reg7 = *xM--;
-			reg8 = *xM--;
-			reg9 = *xM--;
-			reg10 = *xM--;
-			reg11 = *xM--;
-			reg12 = *xM--;
-            yM += 13;
-        }
-
-        --e;
-    }
+		--e;
+	}
   
   //
   unsigned long currentTime = micros();
