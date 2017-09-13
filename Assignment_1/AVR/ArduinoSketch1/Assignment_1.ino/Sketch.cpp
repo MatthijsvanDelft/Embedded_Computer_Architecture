@@ -7,7 +7,9 @@
 //Beginning of Auto generated function prototypes by Atmel Studio
 //End of Auto generated function prototypes by Atmel Studio
 
-extern "C" void operation_loop(void);
+//extern "C" void operation_loop(void);
+
+//extern "C" int32_t addition(int8_t xM, int8_t yM);
 
 #define NR_MATRIX_ROWS 13
 #define NR_MATRIX_COLS 13
@@ -15,7 +17,7 @@ extern "C" void operation_loop(void);
 #define NR_MATRIX_ELEMENTS_MINUS_ONE 168
 
 /**
- * Authors: Matthijs van Delft, Maikel Coenen.
+ * Authors: Matthijs van Delft, Maikel Coenen, René Heijdens.
  * Course: Embedded Computer Architecture.
  * Goal: Optimize this code based on speed as much as possible.
  * Tip: Compile with lever O1.
@@ -69,26 +71,34 @@ void loop() {
 	unsigned long startTime = micros();
 
 	  
-	operation_loop();
+	//operation_loop();
 
-/*
+
     register int8_t *xM = matrixX + NR_MATRIX_ELEMENTS_MINUS_ONE;
     int8_t *xA = xM;
     register int8_t *yM = matrixY + NR_MATRIX_ELEMENTS_MINUS_ONE;
     int8_t *yA = yM;
     register int32_t *r = matrixR + NR_MATRIX_ELEMENTS_MINUS_ONE;
   
-    register uint8_t e = NR_MATRIX_ELEMENTS_MINUS_ONE;    //r18
-    register uint8_t k = 0;						//r19
+    register uint8_t e = NR_MATRIX_ELEMENTS_MINUS_ONE;		//r18
+    register uint8_t k = 0;									//r19
 
 
     do {
         register int mBuffer = 0;
+		
 		k = NR_MATRIX_COLS;
         do {
+
+
+			//mBuffer = addition(*xM, *yM);
 			mBuffer += *xM * *yM;
+			
+			
             --xM;
             yM -= NR_MATRIX_COLS;
+
+
         } while(--k);
         *r += *xA + *yA + mBuffer;
         
@@ -105,7 +115,7 @@ void loop() {
         }
 
     } while(e--);
-	*/
+
   ////////////////////////////////////
   //
   unsigned long currentTime = micros();
