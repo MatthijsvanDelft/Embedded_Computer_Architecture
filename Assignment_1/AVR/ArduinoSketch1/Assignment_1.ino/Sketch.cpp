@@ -15,7 +15,7 @@
 #define NR_MATRIX_ELEMENTS_MINUS_ONE 168
 
 /**
- * Authors: Matthijs van Delft, Maikel Coenen.
+ * Authors: Matthijs van Delft, Maikel Coenen, René Heijdens.
  * Course: Embedded Computer Architecture.
  * Goal: Optimize this code based on speed as much as possible.
  * Tip: Compile with lever O1.
@@ -62,14 +62,15 @@ void loop() {
     70,  108,  69,   12,   0,    80,   115,  107,  71,   54,   5,    57,   3,
     123, 72,   56,   5,    30,   45,   2,    11,   124,  84,   63,   47,   104};
 
-    int8_t *xM = matrixX + NR_MATRIX_ELEMENTS_MINUS_ONE;
+    register int8_t *xM = matrixX + NR_MATRIX_ELEMENTS_MINUS_ONE;
     int8_t *xA = xM;
-    int8_t *yM = matrixY+ NR_MATRIX_ELEMENTS_MINUS_ONE;
+    register int8_t *yM = matrixY+ NR_MATRIX_ELEMENTS_MINUS_ONE;
     int8_t *yA = yM;
-    int32_t *r = matrixR + NR_MATRIX_ELEMENTS_MINUS_ONE;
+    register int32_t *r = matrixR + NR_MATRIX_ELEMENTS_MINUS_ONE;
 
     register uint8_t e = NR_MATRIX_ELEMENTS;
     register uint8_t k = 0;
+	register uint8_t n = 1000;
     register int32_t mBuffer = 0;
 	
 	register int8_t reg0 = 0;
@@ -87,71 +88,85 @@ void loop() {
 	register int8_t reg12 = 0;
   
     /*Start timer*/
-	unsigned long startTime = micros();
-	
-	while(e>0){
+	unsigned long startTime = micros();	
 
-		if(e%13 == 0){
-			yM = matrixY+ NR_MATRIX_ELEMENTS_MINUS_ONE;
+	while (n>0)
+	{
+		n--;
+		//Serial.println(n);
+		while(e>0){
 
-			reg0 = *xM--;
-			reg1 = *xM--;
-			reg2 = *xM--;
-			reg3 = *xM--;
-			reg4 = *xM--;
-			reg5 = *xM--;
-			reg6 = *xM--;
-			reg7 = *xM--;
-			reg8 = *xM--;
-			reg9 = *xM--;
-			reg10 = *xM--;
-			reg11 = *xM--;
-			reg12 = *xM--;
+			if(e%13 == 0){
+				//unsigned long updateTime = micros();
+				yM = matrixY+ NR_MATRIX_ELEMENTS_MINUS_ONE;
+
+				reg0 = *xM--;
+				reg1 = *xM--;
+				reg2 = *xM--;
+				reg3 = *xM--;
+				reg4 = *xM--;
+				reg5 = *xM--;
+				reg6 = *xM--;
+				reg7 = *xM--;
+				reg8 = *xM--;
+				reg9 = *xM--;
+				reg10 = *xM--;
+				reg11 = *xM--;
+				reg12 = *xM--;
+				//updateTime = micros() - updateTime;
+				//Serial.write("updateTime(us): ");
+				//Serial.println(updateTime);
+			}
+
+			mBuffer = 0;
+
+			//unsigned long mathTime = micros();
+			mBuffer += reg0 * *yM;
+			yM -= NR_MATRIX_COLS;
+			mBuffer += reg1 * *yM;
+			yM -= NR_MATRIX_COLS;
+			mBuffer += reg2 * *yM;
+			yM -= NR_MATRIX_COLS;
+			mBuffer += reg3 * *yM;
+			yM -= NR_MATRIX_COLS;
+			mBuffer += reg4 * *yM;
+			yM -= NR_MATRIX_COLS;
+			mBuffer += reg5 * *yM;
+			yM -= NR_MATRIX_COLS;
+			mBuffer += reg6 * *yM;
+			yM -= NR_MATRIX_COLS;
+			mBuffer += reg7 * *yM;
+			yM -= NR_MATRIX_COLS;
+			mBuffer += reg8 * *yM;
+			yM -= NR_MATRIX_COLS;
+			mBuffer += reg9 * *yM;
+			yM -= NR_MATRIX_COLS;
+			mBuffer += reg10 * *yM;
+			yM -= NR_MATRIX_COLS;
+			mBuffer += reg11 * *yM;
+			yM -= NR_MATRIX_COLS;
+			mBuffer += reg12 * *yM;
+
+			*r += mBuffer + *xA + *yA;
+
+			//mathTime = micros() - mathTime;
+			//Serial.write("mathTime(us): ");
+			//Serial.println(mathTime);
+
+			yM += 155;
+
+			--xA;
+			--yA;
+			--r;
+
+			--e;
 		}
-
-		mBuffer = 0;
-
-		mBuffer += reg0 * *yM;
-		yM -= NR_MATRIX_COLS;
-		mBuffer += reg1 * *yM;
-		yM -= NR_MATRIX_COLS;
-		mBuffer += reg2 * *yM;
-		yM -= NR_MATRIX_COLS;
-		mBuffer += reg3 * *yM;
-		yM -= NR_MATRIX_COLS;
-		mBuffer += reg4 * *yM;
-		yM -= NR_MATRIX_COLS;
-		mBuffer += reg5 * *yM;
-		yM -= NR_MATRIX_COLS;
-		mBuffer += reg6 * *yM;
-		yM -= NR_MATRIX_COLS;
-		mBuffer += reg7 * *yM;
-		yM -= NR_MATRIX_COLS;
-		mBuffer += reg8 * *yM;
-		yM -= NR_MATRIX_COLS;
-		mBuffer += reg9 * *yM;
-		yM -= NR_MATRIX_COLS;
-		mBuffer += reg10 * *yM;
-		yM -= NR_MATRIX_COLS;
-		mBuffer += reg11 * *yM;
-		yM -= NR_MATRIX_COLS;
-		mBuffer += reg12 * *yM;
-
-		*r += mBuffer + *xA + *yA;
-
-		yM += 155;
-
-		--xA;
-		--yA;
-		--r;
-
-		--e;
 	}
-  
+
   //
   unsigned long currentTime = micros();
   unsigned long elapsedTime = currentTime - startTime;
-
+  
   //
   Serial.write("Elapsed time(us): ");
   Serial.println(elapsedTime);
