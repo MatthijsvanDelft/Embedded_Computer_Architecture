@@ -82,15 +82,15 @@ void loop() {
 		
 		
 		mBuffer += *xM * *yM;
-        for(k = NR_MATRIX_COLS-1; k > 0; --k){
-            mBuffer += *xM * *yM;
+        for(k = NR_MATRIX_COLS-1; k > 0; --k){        
             --xM;
             yM -= NR_MATRIX_COLS;
+			mBuffer += *xM * *yM;
         }
-		--xM;
 		
-		xM += 13;
-		yM += 168;
+		
+		xM += 12;
+		yM += 155;
 		
         *r += *xA + *yA + mBuffer;
         
