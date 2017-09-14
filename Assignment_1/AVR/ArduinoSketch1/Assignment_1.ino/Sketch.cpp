@@ -70,31 +70,34 @@ void loop() {
   
     register uint8_t e = NR_MATRIX_ELEMENTS;
     register uint8_t k = 0; 
+	register uint8_t i = 13;
   
     /*Start timer*/
     unsigned long startTime = micros();
-
+	
     while(e>0){
-        register int mBuffer = 0;
-        for(k = NR_MATRIX_COLS; k > 0; --k)
-        {
+        register uint32_t mBuffer = 0;
+        for(k = NR_MATRIX_COLS; k > 0; --k){
             mBuffer += *xM * *yM;
             --xM;
             yM -= NR_MATRIX_COLS;
         }
+		
         *r += *xA + *yA + mBuffer;
         xM += 13;
         yM += 168;
-        --xA;
-        --yA;
-        --r;
 
-        if(e%13 == 0){
+        if(--i == 0){
+			i = 13;
             xM -= 13;
             yM += 13;
         }
+		
+		--xA;
+		--yA;
+		--r;
+		--e;
 
-        --e;
     }
   
   //
@@ -104,5 +107,18 @@ void loop() {
   //
   Serial.write("Elapsed time(us): ");
   Serial.println(elapsedTime);
+  
+  
+    int value = 0;
+    for(int p=0; p<13; p++)
+    {
+	    for (int j = 0; j < 13; j++)
+	    {
+		    Serial.print(matrixR[value]);
+			Serial.print('\t');
+		    value++;
+	    }
+	    Serial.print('\n');
+    }
 }
 

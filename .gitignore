@@ -1,0 +1,13 @@
+
+*.o
+*.layout
+*.depend
+*.exe
+Assignment_1/AVR/.vs/ArduinoSketch1/v14/.atsuo
+Assignment_1/AVR/ArduinoSketch1/Assignment_1.ino/Debug/Assignment_1.ino.srec
+Assignment_1/AVR/ArduinoSketch1/Assignment_1.ino/Debug/Assignment_1.ino.map
+Assignment_1/AVR/ArduinoSketch1/Assignment_1.ino/Debug/Assignment_1.ino.lss
+Assignment_1/AVR/ArduinoSketch1/Assignment_1.ino/Debug/Assignment_1.ino.hex
+Assignment_1/AVR/ArduinoSketch1/Assignment_1.ino/Debug/Assignment_1.ino.elf
+Assignment_1/AVR/ArduinoSketch1/Assignment_1.ino/Assignment_1.ino.cppproj
+Assignment_1/AVR/ArduinoSketch1/ArduinoCore/Debug/libArduinoCore.a
