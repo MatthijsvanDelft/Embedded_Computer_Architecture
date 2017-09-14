@@ -7,12 +7,17 @@
 //Beginning of Auto generated function prototypes by Atmel Studio
 //End of Auto generated function prototypes by Atmel Studio
 
+//Flags
+//#define PRINT_RESULT
+#define CYCLE_TEST
 
-
+// Defines
+#define NR_CYCLE_TESTS 1000
 #define NR_MATRIX_ROWS 13
 #define NR_MATRIX_COLS 13
 #define NR_MATRIX_ELEMENTS 169
 #define NR_MATRIX_ELEMENTS_MINUS_ONE 168
+
 
 /**
  * Authors: Matthijs van Delft, Maikel Coenen.
@@ -72,41 +77,59 @@ void loop() {
     register uint8_t k = 0; 
 	register uint8_t i = 13;
 	register uint32_t mBuffer = 0;
+	
   
     /*Start timer*/
     unsigned long startTime = micros();
 	
-    while(e>0){
+#ifdef CYCLE_TEST
+	register uint16_t n = NR_CYCLE_TESTS;
+	while(n > 0){
+#endif
+			
+		while(e > 0){
+			/*mBuffer = 0;*/
+			
+			*r += *xM * *yM;
+			for(k = 12; k > 0; k--){        
+				/**/
+				--xM;
+				yM -= NR_MATRIX_COLS;
+				*r += *xM * *yM;
+			}
+		
+		
+			xM += 12;
+			yM += 155;
+		
+			*r += *xA + *yA + mBuffer;
         
+
+			if(--i == 0){
+				i = 13;
+				xM -= 13;
+				yM += 13;
+			}
+		
+			--xA;
+			--yA;
+			--r;
+			--e;
+		}
+
+#ifdef CYCLE_TEST
+		xA = xM = matrixX + NR_MATRIX_ELEMENTS_MINUS_ONE;
+		yA = yM = matrixY + NR_MATRIX_ELEMENTS_MINUS_ONE;
+		r = matrixR + NR_MATRIX_ELEMENTS_MINUS_ONE;
+		
+		e = NR_MATRIX_ELEMENTS;
+		k = 0;
+		i = 13;
 		mBuffer = 0;
 		
-		
-		mBuffer += *xM * *yM;
-        for(k = NR_MATRIX_COLS-1; k > 0; --k){        
-            --xM;
-            yM -= NR_MATRIX_COLS;
-			mBuffer += *xM * *yM;
-        }
-		
-		
-		xM += 12;
-		yM += 155;
-		
-        *r += *xA + *yA + mBuffer;
-        
-
-        if(--i == 0){
-			i = 13;
-            xM -= 13;
-            yM += 13;
-        }
-		
-		--xA;
-		--yA;
-		--r;
-		--e;
-
-    }
+		--n;
+	}
+#endif
   
   //
   unsigned long currentTime = micros();
@@ -116,17 +139,21 @@ void loop() {
   Serial.write("Elapsed time(us): ");
   Serial.println(elapsedTime);
   
-  
-    int value = 0;
-    for(int p=0; p<13; p++)
-    {
-	    for (int j = 0; j < 13; j++)
-	    {
-		    Serial.print(matrixR[value]);
+ #ifdef PRINT_RESULT
+ 
+	int value = 0;
+	for(int p=0; p<13; p++)
+	{
+		for (int j = 0; j < 13; j++)
+		{
+			Serial.print(matrixR[value]);
 			Serial.print('\t');
-		    value++;
-	    }
-	    Serial.print('\n');
-    }
+			value++;
+		}
+		Serial.print('\n');
+	}
+ 
+ #endif
+
 }
 
