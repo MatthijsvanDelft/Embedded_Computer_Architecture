@@ -71,21 +71,29 @@ void loop() {
     register uint8_t e = NR_MATRIX_ELEMENTS;
     register uint8_t k = 0; 
 	register uint8_t i = 13;
+	register uint32_t mBuffer = 0;
   
     /*Start timer*/
     unsigned long startTime = micros();
 	
     while(e>0){
-        register uint32_t mBuffer = 0;
-        for(k = NR_MATRIX_COLS; k > 0; --k){
+        
+		mBuffer = 0;
+		
+		
+		mBuffer += *xM * *yM;
+        for(k = NR_MATRIX_COLS-1; k > 0; --k){
             mBuffer += *xM * *yM;
             --xM;
             yM -= NR_MATRIX_COLS;
         }
+		--xM;
+		
+		xM += 13;
+		yM += 168;
 		
         *r += *xA + *yA + mBuffer;
-        xM += 13;
-        yM += 168;
+        
 
         if(--i == 0){
 			i = 13;
