@@ -76,6 +76,7 @@ void loop() {
     register uint8_t e = NR_MATRIX_ELEMENTS;
     register uint8_t k = 0; 
 	register uint8_t i = 13;
+	register uint8_t aBuffer = 0;
 	register uint16_t mBuffer1 = 0;
 	register uint16_t mBuffer2 = 0;
 	
@@ -105,8 +106,8 @@ void loop() {
 			xM += 12;
 			yM += 155;
 		
-			uint8_t aBuffer = *xA + *yA;
-			*r += aBuffer + mBuffer1 + (uint32_t)mBuffer2;
+			aBuffer = *xA + *yA;
+			*r = aBuffer + mBuffer1 + (uint32_t)mBuffer2;
         
 
 			if(--i == 0){
