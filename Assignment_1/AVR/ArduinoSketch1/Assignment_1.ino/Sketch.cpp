@@ -20,7 +20,7 @@
 
 
 /**
- * Authors: Matthijs van Delft, Maikel Coenen.
+ * Authors: Matthijs van Delft, Maikel Coenen and Rene Heijdens.
  * Course: Embedded Computer Architecture.
  * Goal: Optimize this code based on speed as much as possible.
  * Tip: Compile with lever O1.
@@ -88,13 +88,10 @@ void loop() {
 	while(n > 0){
 #endif
 			
-		while(e > 0){
-			mBuffer1 = 0;
-			mBuffer2 = 0;
+		while(e > 0){			
 			
 			mBuffer1 += *xM * *yM;
-			for(k = 12; k > 0; k-=2){        
-				/**/
+			for(k = 6; k > 0; k--){        							
 				--xM;
 				yM -= NR_MATRIX_COLS;
 				mBuffer1 += *xM * *yM;
@@ -104,12 +101,12 @@ void loop() {
 				mBuffer2 += *xM * *yM;
 			}
 	
-	
 		
 			xM += 12;
 			yM += 155;
 		
-			*r += *xA + *yA + mBuffer1 + (uint32_t)mBuffer2;
+			uint8_t aBuffer = *xA + *yA;
+			*r += aBuffer + mBuffer1 + (uint32_t)mBuffer2;
         
 
 			if(--i == 0){
@@ -117,7 +114,10 @@ void loop() {
 				xM -= 13;
 				yM += 13;
 			}
-		
+			
+			
+			mBuffer1 = 0;
+			mBuffer2 = 0;		
 			--xA;
 			--yA;
 			--r;
