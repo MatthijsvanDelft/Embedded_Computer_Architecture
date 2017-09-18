@@ -9,7 +9,7 @@
 
 //Flags
 #define PRINT_RESULT
-//#define CYCLE_TEST
+#define CYCLE_TEST
 
 // Defines
 #define NR_CYCLE_TESTS 1000
@@ -133,7 +133,8 @@ void loop() {
 		e = NR_MATRIX_ELEMENTS;
 		k = 0;
 		i = 13;
-		mBuffer = 0;
+		mBuffer1 = 0;
+		mBuffer2 = 0;
 		
 		--n;
 	}
