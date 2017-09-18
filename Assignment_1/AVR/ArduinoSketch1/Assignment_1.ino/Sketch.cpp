@@ -8,8 +8,8 @@
 //End of Auto generated function prototypes by Atmel Studio
 
 //Flags
-//#define PRINT_RESULT
-#define CYCLE_TEST
+#define PRINT_RESULT
+//#define CYCLE_TEST
 
 // Defines
 #define NR_CYCLE_TESTS 1000
@@ -76,7 +76,8 @@ void loop() {
     register uint8_t e = NR_MATRIX_ELEMENTS;
     register uint8_t k = 0; 
 	register uint8_t i = 13;
-	register uint32_t mBuffer = 0;
+	register uint16_t mBuffer1 = 0;
+	register uint16_t mBuffer2 = 0;
 	
   
     /*Start timer*/
@@ -88,21 +89,27 @@ void loop() {
 #endif
 			
 		while(e > 0){
-			/*mBuffer = 0;*/
+			mBuffer1 = 0;
+			mBuffer2 = 0;
 			
-			*r += *xM * *yM;
-			for(k = 12; k > 0; k--){        
+			mBuffer1 += *xM * *yM;
+			for(k = 12; k > 0; k-=2){        
 				/**/
 				--xM;
 				yM -= NR_MATRIX_COLS;
-				*r += *xM * *yM;
+				mBuffer1 += *xM * *yM;
+				
+				--xM;
+				yM -= NR_MATRIX_COLS;
+				mBuffer2 += *xM * *yM;
 			}
-		
+	
+	
 		
 			xM += 12;
 			yM += 155;
 		
-			*r += *xA + *yA + mBuffer;
+			*r += *xA + *yA + mBuffer1 + (uint32_t)mBuffer2;
         
 
 			if(--i == 0){
